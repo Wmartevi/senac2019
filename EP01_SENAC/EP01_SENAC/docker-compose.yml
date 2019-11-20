@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+
+  spree:
+    image: spreecommerce/spree:3.6.4
+    ports:
+      - "3000:3000"
+    networks: 
+      - ep01net
+
+  web:
+    build: .
+    command: python Ep01.py
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/todo
+    links:
+      - mongo
+      - spree
+      - mongo-express
+    networks: 
+      - ep01net
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: martevi
+      ME_CONFIG_BASICAUTH_PASSWORD: senac2019
+      ME_CONFIG_MONGODB_PORT: 27017
+    links:
+      - mongo
+    networks: 
+      - ep01net
+  
+  mongo:
+    image: mongo:4.2
+    ports:
+      - "27017:27017"
+    volumes:
+      - .:/todo/data/mongodb
+    networks:
+     - ep01net
+    
+networks: 
+  ep01net:
+    driver: bridge
