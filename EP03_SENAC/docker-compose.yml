@@ -1,0 +1,11 @@
+version: "3"
+services:
+  hadoop:
+    image: aquelatecnologia/hadoop:2.9.2
+    container_name: hadoop_ep03
+    ports:
+      - 8088:8088
+    volumes:
+      - ./ep03_hadoop:/volume
+    command: /etc/bootstrap.sh -d
+    hostname: hadoop
